@@ -29,10 +29,11 @@ weather_conditions = ["Sunny", "Rainy", "Cloudy", "Windy", "Stormy", "Snowy", "F
 def get_weather(city):
     if city in weather_db:
         return ("\n"
-                f"========== Weather in {city} =============:\n"
+                f"_____________ Weather in {city} _____________:\n"
                 f"Temperature: {weather_db[city]['temperature']}°C\n"
                 f"Condition: {weather_db[city]['condition']}\n"
-                f"Humidity: {weather_db[city]['humidity']}%")
+                f"Humidity: {weather_db[city]['humidity']}%"
+                "\n")
     else:
         return "City not found in the database."
 #Adding, Updating, and Deleting City Weather Data
@@ -76,7 +77,7 @@ while True:
                 if city in weather_db:
                     print("City already exists in the database.")
                     continue
-                elif not city.isalpha():
+                elif not city.replace(" ", "").isalpha():
                     raise ValueError("City name must contain only alphabetic characters.")
             except Exception as e:
                 print("Invalid input. Please try again.")
@@ -95,9 +96,9 @@ while True:
                             continue
                         break
                     while True:
-                        humidity = input("Enter humidity: ").strip()
-                        if not humidity.isdigit():
-                            print("Invalid input for humidity. Please enter a numeric value.")
+                        humidity = input("Enter humidity in percentage(%): ").strip()
+                        if not (humidity.isdigit() or int(humidity) < 0 or int(humidity) > 100):
+                            print("Invalid input for humidity. Please enter a numeric value between 0 and 100.")
                             continue
                         humidity = int(humidity)
                         break
@@ -135,8 +136,8 @@ while True:
                         break    
                     while True:
                         humidity = input("Enter new humidity (press Enter to keep current): ").strip()
-                        if humidity and not humidity.isdigit():
-                            print("Invalid input for humidity. Please enter a numeric value or leave blank.")
+                        if humidity and (not humidity.isdigit() or int(humidity) < 0 or int(humidity) > 100):
+                            print("Invalid input for humidity. Humidity must be between 0 and 100 or leave blank.")
                             continue
                         humidity = int(humidity) if humidity else None
                         
